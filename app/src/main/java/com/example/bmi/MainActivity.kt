@@ -22,6 +22,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.bmi.ui.theme.BmiTheme
 
 
@@ -44,13 +46,13 @@ class MainActivity : ComponentActivity() {
 }
 
 @Composable
-fun Bmi(modifier: Modifier = Modifier) {
-    var heightInput: String by remember { mutableStateOf("") }
+fun Bmi(modifier: Modifier , bmiViewModel: BMIViewModel = viewModel()) {
+    /*var heightInput: String by remember { mutableStateOf("") }
     var weightInput: String by remember { mutableStateOf("") }
     val height = heightInput.toFloatOrNull() ?: 0.0f
     val weight = weightInput.toIntOrNull() ?: 0
     val formatter =DecimalFormat("0.00")
-    val bmi = if (weight > 0 && height > 0) formatter.format(weight / (height * height)) else 0.0f
+    val bmi = if (weight > 0 && height > 0) formatter.format(weight / (height * height)) else 0.0f */
 
     Column {
         Text (
@@ -63,8 +65,8 @@ fun Bmi(modifier: Modifier = Modifier) {
                 .padding(vertical = 16.dp)
         )
         OutlinedTextField(
-            value = heightInput,
-            onValueChange = { heightInput = it.replace(',', '.') },
+            value = bmiViewModel.heightInput,
+            onValueChange = { bmiViewModel.heightInput = it },
             label = { Text(stringResource(R.string.height)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier =Modifier
@@ -72,8 +74,8 @@ fun Bmi(modifier: Modifier = Modifier) {
                 .padding(start = 8.dp, end = 8.dp)
         )
         OutlinedTextField(
-            value = weightInput,
-            onValueChange = { weightInput = it.replace(',', '.') },
+            value = bmiViewModel.weightInput,
+            onValueChange = { bmiViewModel.weightInput = it },
             label = { Text(stringResource(R.string.weight)) },
             keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
             modifier =Modifier
@@ -81,7 +83,7 @@ fun Bmi(modifier: Modifier = Modifier) {
                 .padding(start = 8.dp, end = 8.dp)
         )
         Text(
-            text = stringResource(R.string.body_mass_index_is, bmi),
+            text = stringResource(R.string.body_mass_index_is, bmiViewModel.bmi),
             textAlign = TextAlign.Left,
             color = MaterialTheme.colorScheme.primary,
             modifier = Modifier
@@ -95,6 +97,6 @@ fun Bmi(modifier: Modifier = Modifier) {
 @Composable
 fun BmiPreview() {
     BmiTheme{
-        Bmi()
+        Bmi(modifier = Modifier)
     }
 }
